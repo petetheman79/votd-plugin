@@ -1,0 +1,3 @@
+Daily Bible Verse Plugin Readme..
+
+coming soon...
