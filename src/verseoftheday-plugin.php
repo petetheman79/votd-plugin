@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: YouVersion Daily Bible Verse Plugin
-Plugin URI: https://github.com/petetheman79/dailybibleverse-plugin/
-Description: A Daily Bible Verse Widget that will fetch a daily bible verse from YouVersion.
+Plugin Name: YouVersion Verse Of The Day Plugin
+Plugin URI: https://github.com/petetheman79/verseoftheday-plugin/
+Description: A Verse Of The Day Widget that will fetch a daily bible verse from YouVersion.
 Version: 1.0
 Author: Peter Solomon
 Author URI: https://github.com/petetheman79
@@ -14,12 +14,12 @@ if (!function_exists('add_action')) {
     exit;
 }
 
-class DailyBibleVerseWidget extends WP_Widget
+class YouVersionVerseOfTheDayWidget extends WP_Widget
 {
     public function __construct()
     {
         parent::__construct(
-            'dailybibleversewidget', __('Daily Bible Verse', 'text_domain'),
+            'youversionverseofthedaywidget', __('YouVersion Verse Of The Day', 'text_domain'),
             array('customize_selective_refresh' => true)
         );
     }
@@ -112,9 +112,9 @@ class DailyBibleVerseWidget extends WP_Widget
 }
 
 // Register the widget
-function my_register_custom_widget()
+function my_register_votd_widget()
 {
-    register_widget('DailyBibleVerseWidget');
+    register_widget('YouVersionVerseOfTheDayWidget');
 }
 
-add_action('widgets_init', 'my_register_custom_widget');
+add_action('widgets_init', 'my_register_votd_widget');
