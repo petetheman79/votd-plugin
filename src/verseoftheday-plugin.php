@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: YouVersion Verse Of The Day Plugin
-Plugin URI: https://github.com/petetheman79/verseoftheday-plugin/
+Plugin URI: https://github.com/petetheman79/youversion-votd-plugin
 Description: A Verse Of The Day Widget that will fetch a daily bible verse from YouVersion.
 Version: 1.0
 Author: Peter Solomon
