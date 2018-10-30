@@ -1,4 +1,4 @@
-Verse Of The Day Plugin Readme.
+YouVersion Verse Of The Day Plugin Readme.
 
 This WordPress plugin installs a Widget that will fetch the YouVersion Verse Of The Day.
 
