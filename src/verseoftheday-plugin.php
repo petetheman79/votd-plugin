@@ -1,7 +1,7 @@
 <?php
 /*
-Plugin Name: YouVersion Verse Of The Day Plugin
-Plugin URI: https://github.com/petetheman79/youversion-votd-plugin
+Plugin Name: Verse Of The Day Plugin
+Plugin URI: https://github.com/petetheman79/votd-plugin
 Description: A Verse Of The Day Widget that will fetch a daily bible verse from YouVersion.
 Version: 1.0
 Author: Peter Solomon
@@ -14,12 +14,12 @@ if (!function_exists('add_action')) {
     exit;
 }
 
-class YouVersionVerseOfTheDayWidget extends WP_Widget
+class VerseOfTheDayWidget extends WP_Widget
 {
     public function __construct()
     {
         parent::__construct(
-            'youversionverseofthedaywidget', __('YouVersion Verse Of The Day', 'text_domain'),
+            'verseofthedaywidget', __('YouVersion Verse Of The Day', 'text_domain'),
             array('customize_selective_refresh' => true)
         );
     }
@@ -114,7 +114,7 @@ class YouVersionVerseOfTheDayWidget extends WP_Widget
 // Register the widget
 function my_register_votd_widget()
 {
-    register_widget('YouVersionVerseOfTheDayWidget');
+    register_widget('VerseOfTheDayWidget');
 }
 
 add_action('widgets_init', 'my_register_votd_widget');
