@@ -29,37 +29,39 @@ class VerseOfTheDayWidget extends WP_Widget
         $defaults = array(
             'apikey' => '',
             'versionId' => 1,
+            'showImage' => true,
         );
 
         extract(wp_parse_args((array) $instance, $defaults));?>
 
-		<p>
-			<label for="<?php echo esc_attr($this->get_field_id('apikey')); ?>"><?php _e('ApiKey:', 'text_domain');?></label>
-			<input
-				class="widefat"
-				id="<?php echo esc_attr($this->get_field_id('apikey')); ?>"
-				name="<?php echo esc_attr($this->get_field_name('apikey')); ?>"
-				type="text"
-				value="<?php echo esc_attr($apikey); ?>" />
-
-			<small>Get an ApiKey from YouVersion: <a href='https://developers.youversion.com/' target="_blank">https://developers.youversion.com/</a></small>
-		</p>
-
-        <?php 
-            if ($apikey) {
-                $versions = $this->getVersions($apikey);
-        ?>
         <p>
+            <label for="<?php echo esc_attr($this->get_field_id('apikey')); ?>"><?php _e('ApiKey:', 'text_domain');?></label>
+            <input
+                class="widefat"
+                id="<?php echo esc_attr($this->get_field_id('apikey')); ?>"
+                name="<?php echo esc_attr($this->get_field_name('apikey')); ?>"
+                type="text"
+                value="<?php echo esc_attr($apikey); ?>" />
+
+            <small>Get an ApiKey from YouVersion: <a href='https://developers.youversion.com/' target="_blank">https://developers.youversion.com/</a></small>
+        </p>
+
+        <?php
+        if ($apikey) {
+            $versions = $this->getVersions($apikey);
+        ?>
+            <p>
             <label for="<?php echo esc_attr($this->get_field_id('versionId')); ?>"><?php _e('Version:', 'text_domain');?></label>
             <select
                 class="widefat"
                 id="<?php echo esc_attr($this->get_field_id('versionId')); ?>"
-                name="<?php echo esc_attr($this->get_field_name('versionId')); ?>" >
+                name="<?php echo esc_attr($this->get_field_name('versionId')); ?>"
+            >
 
             <?php foreach ($versions["data"] as $key => $value) {
-                echo "<option value='$value[id],$value[abbreviation]'"; 
-                
-                if($value["id"] == $versionId) {
+                echo "<option value='$value[id],$value[abbreviation]'";
+
+                if ($value["id"] == $versionId) {
                     echo "selected";
                 }
 
@@ -67,11 +69,24 @@ class VerseOfTheDayWidget extends WP_Widget
                 echo $value["abbreviation"];
                 echo "</option>";
             }
-        ?>
+            ?>
             </select>
         </p>
 
-    <?php }
+        <p>
+            <label for="<?php echo esc_attr($this->get_field_id('showImage')); ?>"><?php _e('Show Image:', 'text_domain');?></label>
+            <input type=checkbox
+                id="<?php echo esc_attr($this->get_field_id('showImage')); ?>"
+                name="<?php echo esc_attr($this->get_field_name('showImage')); ?>"
+                <?php if ($showImage == true) {
+                echo "checked";
+            }
+            ?>
+            />
+        </p>
+
+    <?php 
+        }
     }
 
     // Update widget settings
@@ -82,8 +97,10 @@ class VerseOfTheDayWidget extends WP_Widget
         $versionId = isset($new_instance['versionId']) ? wp_strip_all_tags($new_instance['versionId']) : '';
         $version = explode(',', $versionId);
 
-        $instance['versionId'] = isset($version[0]) ? wp_strip_all_tags($version[0]) : '';
-        $instance['versionAbbreviation'] = isset($version[1]) ? wp_strip_all_tags($version[1]) : '';
+        $instance['versionId'] = isset($version[0]) ? wp_strip_all_tags($version[0]) : 1;
+        $instance['versionAbbreviation'] = isset($version[1]) ? wp_strip_all_tags($version[1]) : 'KJV';
+
+        $instance['showImage'] = isset($new_instance['showImage']) ? true : false;
         return $instance;
     }
 
@@ -98,6 +115,7 @@ class VerseOfTheDayWidget extends WP_Widget
         $apikey = isset($instance['apikey']) ? $instance['apikey'] : '';
         $versionId = isset($instance['versionId']) && strlen($instance['versionId']) > 0 ? $instance['versionId'] : 1;
         $abbreviatiton = isset($instance['versionAbbreviation']) ? '(' . $instance['versionAbbreviation'] . ')' : '';
+        $showImage = isset($instance['showImage']) && $instance['showImage'] == 1 ? true : false;
 
         echo $before_widget;
 
@@ -110,7 +128,7 @@ class VerseOfTheDayWidget extends WP_Widget
 
             $votd = $this->getVOTD($apikey, $dayOfTheYear, $versionId);
 
-            if ($votd["image"]) {
+            if (isset($votd["image"]) && $showImage) {
                 $imgUrl = str_replace('{width}x{height}', '310x310', $votd["image"]["url"]);
                 echo '<img src=' . $imgUrl . '>';
                 echo '<p><small>Image: ' . $votd["image"]["attribution"] . '</small></p>';
@@ -138,7 +156,7 @@ class VerseOfTheDayWidget extends WP_Widget
     {
         $url = "https://developers.youversionapi.com/1.0/verse_of_the_day/$dayOfTheYear?version_id=$versionId";
 
-        $json = $this-> getRequest($apikey, $url);
+        $json = $this->getRequest($apikey, $url);
         return $json;
     }
 

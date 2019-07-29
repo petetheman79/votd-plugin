@@ -24,3 +24,13 @@ The Verse Of The Day will now be displayed on your WordPress site.
 You will need to obtain an API key from YouVersion at the following location: https://developers.youversion.com/
 
 Example site: https://church.nextsteps.co.za/
+
+**UPDATE**
+
+In version 1.1 it is now possible to select the Bible version, and to choose whether to display the image.
+
+Download the zip file in the Release folder v1.1 _votd-plugin v1.1.zip_. 
+
+Deactivate and Delete the current plugin.
+Upload the new plugin (same steps as installation).
+Ensure the Plugin is still configured correctly under the Widgets.
